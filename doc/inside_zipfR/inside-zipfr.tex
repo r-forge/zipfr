@@ -568,7 +568,7 @@ from $M\ind{k}$.
 \item one important application is the comparison of two samples $A$ and $B$ from populations containing the same types, though possibly with different frequency distributions; for convenience, we also refer to the populations as $A$ and $B$
 \item formally, we assume a joint vocabulary $\onetoS$ for the two populations; type $i$ has occurrence probability $\pi_i$ in $A$ and $\pi'_i$ in $B$, each of which may be zero (if a type doesn't occur in this population); types are listed by descending sum of the probabilities $\pi_i + \pi'_i$, which may be different from the canonical ordering for either population; importantly, $i$ always refers to \emph{the same} type in both populations
 \item type frequency counts are given by r.v.\ $f_i$ for $A$ and $f_i'$ for $B$; the individual frequency spectra of the samples are denoted by $V, V_m$ for $A$ and $V', V'_m$ for $B$; and the sample sizes are $N, N'$
-\item the key statistic for analysing vocabulary overlap is the \textbf{joint frequency spectrum} (JFS)
+\item the key statistic for analysing vocabulary overlap is the \textbf{joint frequency spectrum} (jfs)
   \[
     V_{k,k'} = \sumi \I{f_i = k \wedge f'_i = k'}
   \]
@@ -586,8 +586,8 @@ from $M\ind{k}$.
       \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots
     \end{array}
   \]
-\item the JFS is usually much sparser than the spectra of individual samples, which makes the usual approach based on normal approximations unsuitable, except for the very low end of the JFS and/or very large samples
-\item the marginal spectra are obtained by summing over the rows and columns of the JFS:
+\item the jfs is usually much sparser than the spectra of individual samples, which makes the usual approach based on normal approximations unsuitable, except for the very low end of the jfs and/or very large samples
+\item the marginal spectra are obtained by summing over the rows and columns of the jfs:
   \[
     V_m = \sum_{k'} V_{m,k'} \qquad
     V'_{m'} = \sum_{k} V_{k,m'}
@@ -607,6 +607,10 @@ from $M\ind{k}$.
   \[
     \Vcap = \sum_{k, k' = 1}^{\infty} V_{k, k'}
   \]
+  and can also be broken down by total frequency $m = f_i + f'_i$ of each shared type, which requires summing over shortened diagonals (excluding $V_{m,0}$ and $V_{0,m}$)
+  \[
+    \Vcap_m = \sum_{k'=1}^{m-1} V_{m - k', k'}
+  \]
 \item the number of types unique to $A$ is the sum over the first column (except for $V_{0,0}$), and analogously for the number of types unique to $B$
   \[
     \VdiffA = \sum_{k=1}^{\infty} V_{k,0} \qquad
@@ -615,8 +619,41 @@ from $M\ind{k}$.
 \item this results in several simple identities
   \begin{align*}
     \Vcup &= V + \VdiffA = V' + \VdiffB \\
-    \Vcap &= V - \VdiffA = V' - \VdiffB = V + V' - \Vcup
+    \Vcap &= V - \VdiffA = V' - \VdiffB = V + V' - \Vcup \\
+    \Vcap_m &= \Vcup_m - V_{0,m} - V_{m,0}
   \end{align*}
+\item finally, the shared token count of $A$ and $B$, i.e.\ the total number of tokens for the shared types, can be computed as
+  \[
+    N^{A\cap B} = \sum_{m=1}^{\infty} m \Vcap_m
+  \]
+\end{itemize}
+
+\subsubsection{Two samples from the same population}
+\label{sec:app:overlap:same}
+
+\begin{itemize}
+\item the only relatively easy case is when $A$ an $B$ are two independent samples from the same population
+\end{itemize}
+
+\todo[inline]{work out expectations $\Exp{V_{m,m'}(N, N')}$, which should be possible in terms of $\Exp{V}$ and $\Exp{V_m}$, but likely with a slightly complicated equation}
+\todo[inline]{work out $\Exp{\Vcap(N, N')}$ both with the easy intuitive reasoning of a joint random sample of size $N = N + N'$ and through the connection to the expected joint frequency spectrum}
+\todo[inline]{explain why variances and the full sampling distributions are difficult and will first have to be explored via simulation experiments}
+
+\subsubsection{Samples from different populations}
+\label{sec:app:overlap:different}
+
+\begin{itemize}
+\item two populations with shared vocabulary are described by pairs of probabilities $(\pi_i, \pi'_i)$ for corresponding types, and approximated by a \textbf{joint type density function} (jtdf) $g(\pi, \pi')$
+\item the baseline case of two populations with uncorrelated type probabilties
+  \[
+    g(\pi, \pi') = g(\pi)\cdot g(\pi')
+  \]
+  is extremely unrealistic and might only serve as a purely mathematical point of reference (e.g.\ \emph{the} might then be the most common word in $A$ but extremely rare in $B$); as a consequence, any realistic model will have to assume a relatively high level of correlation between the frequency distributions
+\item the other extreme is the case of two identical populations $A$ and $B$ (or, equivalently, samples from the same population, as discussed in Sec.~\ref{sec:app:overlap:same}); in this case, the type mass is concentrated along the diagonal, resulting in some improper delta function similar to
+  \[
+    g(\pi, \pi') = g(\pi) \delta(\pi' - \pi)
+  \]
+\item this case therefore needs to be analysed separately (Sec.~\ref{sec:app:overlap:same}); however, this observation also means that very strongly correlated populations cannot easily be represented by a jtdf, which would be concentrated on a small area close to the diagonal and hence be poorly conditioned
 \end{itemize}
 
 
