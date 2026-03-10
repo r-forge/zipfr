@@ -570,7 +570,7 @@ from $M\ind{k}$.
 \item type frequency counts are given by r.v.\ $f_i$ for $A$ and $f_i'$ for $B$; the individual frequency spectra of the samples are denoted by $V, V_m$ for $A$ and $V', V'_m$ for $B$; and the sample sizes are $N, N'$
 \item the key statistic for analysing vocabulary overlap is the \textbf{joint frequency spectrum} (jfs)
   \[
-    V_{k,k'} = \sumi \I{f_i = k \wedge f'_i = k'}
+    V_{k,k'} = \sumi \IV{f_i = k \wedge f'_i = k'}
   \]
   which takes the form of a two-dimensional table
   \[
@@ -633,9 +633,54 @@ from $M\ind{k}$.
 
 \begin{itemize}
 \item the only relatively easy case is when $A$ an $B$ are two independent samples from the same population
+\item as usual, we assume independent Poisson sampling in order to simplify equations and to have a better chance of being able to work out some variances at least
+\item the Poisson probability of type $i$ occurring $k$ times in a sample of size $N$ is
+  \[ 
+    \Exp{\IV{f_i =k}} = \p{f_i = k} = e^{-N\pi_i} \frac{(N\pi_i)^{k}}{k!}
+  \]
+\item since $A$ and $B$ are independent samples, the joint probability is
+  \begin{align*}
+    \Exp{\IV{f_i = k \wedge f'_i = k'}}
+    &= \p{f_i = k \wedge f'_i = k'} \\
+    &= e^{-N\pi_i} \frac{(N\pi_i)^{k}}{k!} \cdot e^{-N'\pi_i} \frac{(N'\pi_i)^{k'}}{k'!} \\
+    &= e^{-(N + N') \pi_i} \frac{N^k (N')^{k'}}{k! k'!} \pi_i^{k + k'} \\
+    &= e^{-(N + N') \pi_i} \frac{\bigl( (N + N') \pi_i \bigr)^{k + k'}}{(k + k')!}\cdot
+      \binom{k+k'}{k}\cdot  \frac{N^k (N')^{k'}}{(N + N')^{k + k'}} \\
+    &= e^{-(N + N') \pi_i} \frac{\bigl( (N + N') \pi_i \bigr)^{k + k'}}{(k + k')!}\cdot
+      \binomP{k}{k + k'}{\tfrac{N}{N + N'}}
+  \end{align*}
+  with the binomial probability
+  \[
+    \binomP{k}{n}{p} = \binom{n}{k} p^k (1 - p)^{n - k}
+  \]
+\item the intuition behind this result is simple: the spectrum element $\Vcup_m$ represents types with a total frequency of $m = k + k'$ in the union of the samples; it is the sum over a diagonal in the jfs; types are assigned to the individual jfs cells depending on how their $m$ occurrences are split across the two samples, which leads to a binomial distribution  
+\item for identical sample sizes $N = N'$ the equation simplifies further:
+  \[
+    \Exp{\IV{f_i = k \wedge f'_i = k'}}
+    = e^{-2N \pi_i} \frac{(2N \pi_i)^{k + k'}}{(k + k')!}\cdot \binomP{k}{k + k'}{\tfrac12}
+  \]
+\item we can easily obtain expected spectrum sizes by summing over the probabilities
+  \[
+    \Exp{V_m} = \sumi \Exp{\IV{f_i = m}} 
+  \]
+  and correspondingly for the jfs
+  \[
+    \Exp{V_{k, k'}} = \sumi \Exp{\IV{f_i = k \wedge f'_i = k'}} 
+  \]
+\item for a practical implementation, the sum must be approximated by a Poisson integral over the type density function $g(\pi)$:
+  \[
+    \Exp{V_m} = \int_0^{\infty} \frac{(N\pi)^m}{m!} e^{-N\pi} g(\pi) \dpi
+  \]
+\item after the transformation above, the expectation of the jfs also takes the form of a Poisson integral for the union of the samples (with frequency class $m = k + k'$ and sample size $N + N'$):
+  \begin{align*}
+    \Exp{V_{k, k'}}
+    &= \int_0^{\infty} \frac{\bigl( (N + N') \pi \bigr)^{k + k'}}{(k + k')!} e^{-(N + N')\pi}
+      \cdot \binomP{k}{k + k'}{\tfrac{N}{N + N'}} \cdot g(\pi) \dpi \\
+    &= \binomP{k}{k + k'}{\tfrac{N}{N + N'}}\cdot \Exp{V_{k+k'}(N + N')}
+  \end{align*}
 \end{itemize}
 
-\todo[inline]{work out expectations $\Exp{V_{m,m'}(N, N')}$, which should be possible in terms of $\Exp{V}$ and $\Exp{V_m}$, but likely with a slightly complicated equation}
+\todo[inline]{work out expectation $\Exp{\Vcup(N + N')}$ for the joint sample, which should be possible in terms of $\Exp{V}$ and $\Exp{V_m}$, but likely with a slightly complicated equation}
 \todo[inline]{work out $\Exp{\Vcap(N, N')}$ both with the easy intuitive reasoning of a joint random sample of size $N = N + N'$ and through the connection to the expected joint frequency spectrum}
 \todo[inline]{explain why variances and the full sampling distributions are difficult and will first have to be explored via simulation experiments}
 

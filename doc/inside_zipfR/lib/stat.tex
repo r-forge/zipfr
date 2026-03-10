@@ -20,10 +20,10 @@
 \newcommand{\Expscale}[2][]{E_{#1}\left[#2\right]}
 \newcommand{\Varscale}[2][]{\mathop{\mathrm{Var}}_{#1}\left[#2\right]}
 
-%% \I{f_i = M};  \bigI{\sum_{i=1}^S f_i = N}
+%% \IV{f_i = M};  \bigIV{\sum_{i=1}^S f_i = N}
 %% indicator variable (as in Baayen 2001), and variant with explicitly scaled brackets
-\newcommand{\I}[1]{I_{\left[#1\right]}}
-\newcommand{\bigI}[1]{I_{\bigl[#1\bigr]}}
+\newcommand{\IV}[1]{I_{\left[#1\right]}}
+\newcommand{\bigIV}[1]{I_{\bigl[#1\bigr]}}
 
 %% \Hind;  \Hhom;  \Hnull{\kappa = x}
 %% null hypothesis of independence and homogeneity; general null hypothesis identified by condition
@@ -38,6 +38,10 @@
 %% \df = 1
 %% degrees of freedom
 \newcommand{\df}{\mathit{df}}
+
+%% \binomP{k}{n}{p}
+%% binomial probability of k successes out of n trials with probability p
+\newcommand{\binomP}[3]{B\bigl(#1; #2, #3\bigr)}
 
 
 %%% Local Variables: 
