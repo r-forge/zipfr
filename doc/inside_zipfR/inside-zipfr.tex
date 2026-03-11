@@ -678,10 +678,43 @@ from $M\ind{k}$.
       \cdot \binomP{k}{k + k'}{\tfrac{N}{N + N'}} \cdot g(\pi) \dpi \\
     &= \binomP{k}{k + k'}{\tfrac{N}{N + N'}}\cdot \Exp{V_{k+k'}(N + N')}
   \end{align*}
+\item expected vocabulary size is computed analogously via the identity $\IV{f_i > 0} = 1 - \IV{f_i = 0}$
+  \[
+    \Exp{V} = \sumi \Exp{\IV{f_i > 0}} = \sumi \Exp{1 - \IV{f_i > 0}}
+    = \sumi \bigl( 1 - e^{-N \pi_i} \bigr)
+  \]
+  and approximated via the integral
+  \[
+    \Exp{V} = \int_0^{\infty} \bigl( 1 - e^{-N\pi} \bigr) g(\pi) \dpi
+  \]
+\item we can compute expected vocabulary sizes for the union of the samples and their vocabulary differences (types unique to one sample) in a similar way
+  \begin{align*}
+    \Exp{\Vcup}
+    &= \sumi \Exp{\IV{f_i > 0\vee f'_i > 0}} = \sumi \Exp{1 - \IV{f_i = 0\wedge f'_i = 0}}
+      = \sumi \bigl( 1 - e^{-N \pi_i} e^{-N' \pi_i} \bigr) \\
+    &= \sumi \bigl( 1 - e^{-(N + N') \pi_i} \bigr) = \Exp{V(N + N')} \\
+    \Exp{\VdiffA}
+    &= \sumi \Exp{\IV{f_i > 0\wedge f'_i = 0}}
+      = \sumi \bigl( 1 - e^{-N \pi_i} \bigr) e^{-N' \pi_i} \\
+    &= \sumi \bigl( 1 - e^{-(N + N') \pi_i} \bigr) - \bigl( 1 - e^{-N' \pi_i} \bigr)
+      = \Exp{V(N + N')} - \Exp{V(N')} \\
+    \Exp{\VdiffB}
+    &= \Exp{V(N + N')} - \Exp{V(N)} 
+  \end{align*}
+\item based on these results, we obtain the expected vocabulary overlap as
+  \begin{align*}
+    \Exp{\Vcap(N, N')}
+    &= \sumi \Exp{\IV{f_i > 0\wedge f'_i > 0}}
+      = \sumi \bigl( 1 - e^{-N \pi_i} \bigr) \cdot \bigl( 1 - e^{-N' \pi_i} \bigr) \\
+    & = \sumi \bigl( 1 - e^{-N \pi_i} \bigr) - \sumi \bigl( 1 - e^{-N \pi_i} \bigr) e^{-N' \pi_i}
+      = \Exp{V(N)} - \Exp{\VdiffA} \\
+    &= \Exp{V(N)} - \bigl( \Exp{V(N + N')} - \Exp{V(N')} \bigr) \\
+     &= \Exp{V(N)} + \Exp{V(N')} - \Exp{V(N + N')}
+  \end{align*}
 \end{itemize}
 
-\todo[inline]{work out expectation $\Exp{\Vcup(N + N')}$ for the joint sample, which should be possible in terms of $\Exp{V}$ and $\Exp{V_m}$, but likely with a slightly complicated equation}
-\todo[inline]{work out $\Exp{\Vcap(N, N')}$ both with the easy intuitive reasoning of a joint random sample of size $N = N + N'$ and through the connection to the expected joint frequency spectrum}
+\todo[inline]{re-derive these results with the easy intuitive reasoning of a joint random sample of size $N = N + N'$}
+\todo[inline]{simple equation for expected frequency spectrum of overlap?}
 \todo[inline]{explain why variances and the full sampling distributions are difficult and will first have to be explored via simulation experiments}
 
 \subsubsection{Samples from different populations}
