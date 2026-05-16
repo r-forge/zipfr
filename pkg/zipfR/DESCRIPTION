@@ -4,7 +4,7 @@ Title: Statistical Models for Word Frequency Distributions
 Version: 0.6-72
 Depends: R (>= 3.0.0)
 Imports: methods, utils, stats, graphics, grDevices, parallel
-Date: 2022-10-13
+Date: 2021-10-13
 Authors@R: c(person("Stephanie", "Evert", email="stephanie.evert@fau.de", role=c("cre", "aut"), comment=c(ORCID="0000-0002-4192-2437")), person("Marco", "Baroni", email="mbaroni@gmail.com", role=c("aut"), comment=c(ORCID="0000-0001-5066-3580")))
 Description: Statistical models and utilities for the analysis of word frequency distributions.
 	The utilities include functions for loading, manipulating and visualizing word frequency
