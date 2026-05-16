@@ -10,7 +10,7 @@ lnre.productivity.measures <- function (model, N=NULL, measures, data.frame=TRUE
   else
     if (!is.function(sample)) stop("'sample' must be a callback function suitable for lnre.bootstrap()")
 
-  supported <- qw("V TTR R C k U W P Hapax H S alpha2 K D")
+  supported <- qw("V TTR R C k theta U W P Hapax H S alpha2 K D")
   if (bootstrap) supported <- c(supported, qw("Entropy eta"))
   if (missing(measures) || is.null(measures)) measures <- supported
   measures <- sapply(measures, match.arg, choices=supported)
@@ -53,6 +53,7 @@ lnre.productivity.measures <- function (model, N=NULL, measures, data.frame=TRUE
            R = .EV / sqrt(N),
            C = log(.EV) / log(N),
            k = log(.EV) / log(log(N)),
+           theta = log(log(.EV)) / log(log(N)),
            U = log(N)^2 / (log(N) - log(.EV)),
            W = N ^ (.EV ^ -0.172),
            ## measures based on hapax count (V1)

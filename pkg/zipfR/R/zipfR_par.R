@@ -39,7 +39,7 @@ zipfR.par <- function (..., bw.mode=FALSE)
 .PAR <- new.env()
 
 ## styles for colour plots
-.PAR$lty <- c(rep("solid", 7), rep("dashed", 7))
+.PAR$lty <- c(rep("solid", 7), rep("dashed", 7)) 
 .PAR$lwd <- rep(c(3,3,3,3,3,3,3), 2)
 .PAR$col <- rep(c("#808080", "#D65F5F", "#6ACC65", "#4878CF", "#C4AD66", "#77BEDB", "#B47CC7"), 2) # seaborn muted
 .PAR$pch <- rep(c(1, 3, 15, 2, 20), 3)

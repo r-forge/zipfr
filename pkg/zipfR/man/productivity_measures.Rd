@@ -91,6 +91,9 @@ productivity.measures(obj, measures, data.frame=TRUE, ...)
     \item{\code{k}:}{
       Dugast's (1979) \eqn{k = \frac{ \log V }{ \log \log N}}{k = log(V) / log(log(N))}
     }
+    \item{\code{theta}:}{
+      Somers's (1966) \eqn{\theta = \frac{ \log \log V }{ \log \log N}}{theta = log(log(V)) / log(log(N))}
+    }
     \item{\code{U}:}{
       Dugast's (1978, 1979) \eqn{U = \frac{ (\log N)^2 }{ \log N - \log V}}{U = log(N)^2 / (log(N) - log(V))}.
       Maas (1972) proposed an equivalent measure \eqn{a^2 = 1 / U}.

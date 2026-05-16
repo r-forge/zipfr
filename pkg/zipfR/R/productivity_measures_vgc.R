@@ -1,6 +1,6 @@
 productivity.measures.vgc <- function (obj, measures, data.frame=TRUE, ...)
 {
-  supported <- qw("V TTR R C k U W P Hapax H S alpha2")
+  supported <- qw("V TTR R C k theta U W P Hapax H S alpha2")
   if (missing(measures)) measures <- supported
   measures <- sapply(measures, match.arg, choices=supported)
   res <- numeric(length(measures))
@@ -9,7 +9,7 @@ productivity.measures.vgc <- function (obj, measures, data.frame=TRUE, ...)
 
   ## check which measures can be computed from the available spectrum elements
   idx.ok <- (
-    (measures %in% qw("V TTR R C k U W")) | 
+    (measures %in% qw("V TTR R C k theta U W")) | 
       (measures %in% qw("P Hapax H") & m.max >= 1) | 
       (measures %in% qw("S alpha2") & m.max >= 2))
   res <- matrix(0, nrow=length(obj$N), ncol=length(measures))
@@ -26,6 +26,7 @@ productivity.measures.vgc <- function (obj, measures, data.frame=TRUE, ...)
            R = V(obj) / sqrt(N(obj)),
            C = log( V(obj) ) / log( N(obj) ),
            k = log( V(obj) ) / log(log( N(obj) )),
+           theta = log(log( V(obj) )) / log(log( N(obj) )),
            U = log( N(obj) )^2 / ( log(N(obj)) - log(V(obj)) ),
            W = N(obj) ^ (V(obj) ^ -0.172),
            ## measures based on hapax count (V1)
